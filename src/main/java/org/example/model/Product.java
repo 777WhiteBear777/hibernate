@@ -15,8 +15,8 @@ public class Product {
     private float price;
     @ManyToMany(cascade = CascadeType.ALL )
     @JoinTable(name = "shopping_cart",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<User> users = new HashSet<>();
 
     public Long getId() {

@@ -2,10 +2,7 @@ import org.example.connectivity.HibernateSession;
 import org.example.dao.Impl.UserHibernateDAO;
 import org.example.model.User;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class UserHibernateDAOTest {
 
@@ -20,11 +17,13 @@ public class UserHibernateDAOTest {
     }
 
     @Test
+    @Order(1)
     public void testGetAll() {
         Assertions.assertNotNull(userHibernateDAO.getAll());
     }
 
     @Test
+    @Order(3)
     public void addObj() {
         User user = new User();
         user.setFirstname("Test");
@@ -33,12 +32,14 @@ public class UserHibernateDAOTest {
     }
 
     @Test
+    @Order(2)
     public void getById() {
         User user = userHibernateDAO.getById(1L);
         Assertions.assertEquals(1, user.getId());
     }
 
     @Test
+    @Order(4)
     public void update() {
         user.setLastname("TEST_TEST");
         userHibernateDAO.update(user);
@@ -46,6 +47,7 @@ public class UserHibernateDAOTest {
     }
 
     @Test
+    @Order(5)
     public void delete(){
         userHibernateDAO.delete(user.getId() - 1);
         Assertions.assertNull(session.find(User.class, user.getId() - 1));

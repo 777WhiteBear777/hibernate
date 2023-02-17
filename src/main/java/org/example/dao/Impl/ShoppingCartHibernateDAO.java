@@ -13,7 +13,7 @@ public class ShoppingCartHibernateDAO implements ShoppingCartDAO {
     @Override
     public List<Product> getAllProductByUser(Long userId) {
         try (Session session = HibernateSession.getSessionFactory().openSession()) {
-            String hql = "from Product p join p.users u where u.id = :id";
+            String hql = "from Product p join p.users u  where u.id = :id";
             List<Product> products = session.createQuery(hql, Product.class).setParameter("id", userId).list();
             products.forEach(product -> Hibernate.initialize(product.getUsers()));
             return products;

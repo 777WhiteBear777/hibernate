@@ -15,8 +15,8 @@ public class User {
     private String lastname;
     @ManyToMany
     @JoinTable(name = "shopping_cart",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private Set<Product> products = new HashSet<>();
 
     public Long getId() {

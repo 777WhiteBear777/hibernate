@@ -1,12 +1,15 @@
 import org.example.connectivity.HibernateSession;
 import org.example.dao.Impl.ShoppingCartHibernateDAO;
+import org.example.model.Product;
+import org.example.model.User;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
+import java.util.List;
 
 public class ShoppingCartHibernateDAOTest {
+    private User user;
 
     private final ShoppingCartHibernateDAO shoppingCartHibernateDAO = new ShoppingCartHibernateDAO();
     private Session session;
@@ -15,38 +18,41 @@ public class ShoppingCartHibernateDAOTest {
     public void getConnection() {
         session = HibernateSession.getSessionFactory().openSession();
         try {
-            shoppingCart = session.createQuery("from ShoppingCart order by userId desc limit 1", ShoppingCart.class)
-                    .getSingleResult();
+            String hql = "from User u join u.products p  order by u.id desc limit 1";
+            user = session.createQuery(hql, User.class).getSingleResult();
         } catch (Exception e) {
             System.out.println("add data...\n" + e);
         }
     }
 
     @Test
+    @Order(1)
     public void getAllProductByUser() {
-        Assertions.assertNotNull(shoppingCartHibernateDAO.getAllProductByUser(shoppingCart.getUserId()));
+        Assertions.assertNotNull(shoppingCartHibernateDAO.getAllProductByUser(user.getId()));
     }
 
     @Test
+    @Order(4)
     public void deleteAllProductByUser() {
-        Long id = shoppingCart.getUserId();
+        Long id = user.getId();
         shoppingCartHibernateDAO.deleteAllProductByUser(id);
-        Assertions.assertNotNull(session.createQuery("from ShoppingCart where userId = :userId", ShoppingCart.class).setParameter("userId", shoppingCart.getUserId()));
+        String hql = "from Product p join p.users u  where u.id = :id";
+        Assertions.assertNotNull(session.createQuery(hql, Product.class).setParameter("id", id).list());
     }
 
     @Test
+    @Order(3)
     public void deleteShopCart() {
-        shoppingCartHibernateDAO.deleteShopCart(shoppingCart.getUserId(), shoppingCart.getProductId());
+        shoppingCartHibernateDAO.deleteShopCart(user.getId(),6L);
         session = HibernateSession.getSessionFactory().openSession();
-        Assertions.assertNull(session.find(ShoppingCart.class, shoppingCart));
+        Assertions.assertNotNull(session.find(User.class, user.getId()));
     }
 
     @Test
+    @Order(2)
     public void addShopCart() {
-        shoppingCart.setUserId(5L);
-        shoppingCart.setProductId(5L);
-        shoppingCartHibernateDAO.addShopCart(shoppingCart);
-        Assertions.assertNotNull(session.find(ShoppingCart.class, shoppingCart));
+        shoppingCartHibernateDAO.addShopCart(5L,6L);
+        Assertions.assertNotNull(session.find(User.class, user.getId()));
     }
 
     @AfterEach

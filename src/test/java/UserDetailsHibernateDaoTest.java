@@ -3,10 +3,7 @@ import org.example.dao.Impl.UserDetailsHibernateDAO;
 import org.example.model.User;
 import org.example.model.UserDetails;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class UserDetailsHibernateDaoTest {
 
@@ -21,11 +18,14 @@ public class UserDetailsHibernateDaoTest {
     }
 
     @Test
+    @Order(2)
+
     public void testGetAll() {
         Assertions.assertNotNull(userDetailsHibernateDAO.getAll());
     }
 
     @Test
+    @Order(3)
     public void addObj() {
         UserDetails userDetails = new UserDetails();
         User user;
@@ -39,12 +39,14 @@ public class UserDetailsHibernateDaoTest {
     }
 
     @Test
+    @Order(1)
     public void getById() {
         UserDetails user = userDetailsHibernateDAO.getById(1L);
         Assertions.assertEquals(1, user.getId());
     }
 
     @Test
+    @Order(4)
     public void update() {
         userDetails.setAge((byte) 20);
         userDetailsHibernateDAO.update(userDetails);
@@ -52,6 +54,7 @@ public class UserDetailsHibernateDaoTest {
     }
 
     @Test
+    @Order(5)
     public void delete(){
         userDetailsHibernateDAO.delete(userDetails.getId() - 1);
         Assertions.assertNull(session.find(UserDetails.class, userDetails.getId() - 1));

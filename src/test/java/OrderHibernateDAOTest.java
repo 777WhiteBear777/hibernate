@@ -13,16 +13,19 @@ public class OrderHibernateDAOTest {
     OrderHibernateDAO orderHibernateDAO = new OrderHibernateDAO();
 
     @Test
+    @org.junit.jupiter.api.Order(1)
     public void getAllOrder() {
         Assertions.assertNotNull(orderHibernateDAO.getAllOrder());
     }
 
     @Test
+    @org.junit.jupiter.api.Order(2)
     public void getAllOrderByUser() {
         Assertions.assertNotNull(orderHibernateDAO.getAllOrderByUser(1L));
     }
 
     @Test
+    @org.junit.jupiter.api.Order(3)
     public void addOrder() throws SQLException {
         Order order = new Order();
         User user;
